@@ -1,0 +1,41 @@
+function weatherapi() {
+
+const api_key = "xxxxxx";
+let url = "http://api.weatherapi.com/v1/current.json?key=";
+
+var sheet = SpreadsheetApp.getActiveSpreadsheet();
+var activesheet = sheet.getSheetByName('WEATHER API');
+var lr = activesheet.getLastRow()+1;
+var location = sheet.getRange("B2").getValue();
+
+var request = url+api_key+"&q="+location;
+Logger.log(request)
+var response = UrlFetchApp.fetch(request);
+var data = JSON.parse(response.getContentText())
+
+let country = data.location.country;
+let localtime = data.location.localtime;
+let temp = data.current.temp_c;
+let localtime1 = data.location.localtime;
+let region1 = data.location.region;
+let condition = data.current.condition.text;
+let img = data.current.condition.icon;
+
+'=IMAGE("https://cdn.weatherapi.com/weather/64x64/day/176.png",2)'
+ var imageUrl = '=image("https:'+img+'",2)';
+  
+  
+
+Logger.log(imageUrl)
+
+activesheet.getRange(lr,1).setValue(country)
+activesheet.getRange(lr,2).setValue(localtime)
+activesheet.getRange(lr,3).setValue(temp)
+activesheet.getRange(lr,4).setValue(localtime1)
+activesheet.getRange(lr,4).setValue(localtime1)
+activesheet.getRange(lr,5).setValue(region1)
+activesheet.getRange(lr,6).setValue(condition)
+activesheet.getRange(lr,7).setFormula(imageUrl)
+
+
+}
